@@ -23,10 +23,14 @@ jobs:
         mkdir /tmp/github-pages
         cd /tmp/github-pages
         
-        if $keep_history && $REMOTE_BRANCH_EXISTS
+        if $keep_history && [ $REMOTE_BRANCH_EXISTS -ne 0 ]
         then
+        echo remote exists
+        echo clone repo
         git clone --quiet --branch ${target_branch} --depth 1 ${REMOTE} .
         else
+        echo remote does not exist
+        echo initialize repo
         git init .
         git checkout --orphan gh-pages
         fi
@@ -41,7 +45,7 @@ jobs:
         else
         echo
         echo log before commit
-        git log -1 HEAD --pretty=format:%s
+        git log
         git config user.name ${COMMITER_NAME}
         git config user.email ${COMMITER_EMAIL}
         git status --porcelain
@@ -49,7 +53,7 @@ jobs:
         git commit -m "DIST to ${target_branch}"
         echo
         echo log after commit
-        git log -1 HEAD --pretty=format:%s
+        git log
         
         echo 🏃 Deploying ${build_dir} directory to ${target_branch} branch on ${repo} repo
         
