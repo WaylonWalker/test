@@ -30,7 +30,7 @@ jobs:
         git config user.email ${COMMITER_EMAIL}
         git status --porcelain
         git add --all .
-        git commit commit -m "DIST to gh-pages"
+        git commit -m "DIST to gh-pages"
         git push --quiet --force ${REMOTE} gh-pages
         
         
