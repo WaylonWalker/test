@@ -28,7 +28,7 @@ jobs:
         git checkout --orphan gh-pages
         fi
         
-        echo "<h1>hello there.</h1><p>How are You?</p>" > index.html
+        echo "<h1>hello there.</h1><p>How are you?</p>" > index.html
         
         DIRTY=$(git status --short | wc -l)
         
@@ -36,7 +36,6 @@ jobs:
         then
         echo '⚠️ There are no changes to commit, stopping.'
         else
-        git log
         git config user.name ${COMMITER_NAME}
         git config user.email ${COMMITER_EMAIL}
         git add --all .
