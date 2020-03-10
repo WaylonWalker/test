@@ -44,6 +44,9 @@ jobs:
         echo '⚠️ There are no changes to commit, stopping.'
         else
         echo
+        echo "keep_history: $keep_history"
+        echo "REMOTE_BRANCH_EXISTS: $REMOTE_BRANCH_EXISTS"
+        echo "DIRTY: $DIRTY"
         echo log before commit
         git log
         git config user.name ${COMMITER_NAME}
