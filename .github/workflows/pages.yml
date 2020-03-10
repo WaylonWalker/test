@@ -39,7 +39,7 @@ jobs:
         
         DIRTY=$(git status --short | wc -l)
         
-        if $keep_history &&  [ $REMOTE_BRANCH_EXISTS -ne 0 ] && [ DIRTY = 0 ]
+        if $keep_history &&  [ $REMOTE_BRANCH_EXISTS -ne 0 ] && [ $DIRTY = 0 ]
         then
         echo '⚠️ There are no changes to commit, stopping.'
         else
