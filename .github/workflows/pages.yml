@@ -20,13 +20,16 @@ jobs:
         mkdir /tmp/github-pages
         cd /tmp/github-pages
         git init
+        git checkout --orphan gh-pages
+        git status --short
         # git ls-remote --heads ${REMOTE} gh-pages
         echo "<h1>hello there</h1>" > index.html
         git config user.name ${COMMITER_NAME}
         git config user.email ${COMMITER_EMAIL}
+        git status --porcelain
         git add --all .
         git commit commit -m "DIST to gh-pages"
-        git push --quiet --force
+        git push --quiet --force ${REMOTE} gh-pages
         
         
         
