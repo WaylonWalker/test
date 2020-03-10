@@ -16,10 +16,12 @@ jobs:
         COMMITER_EMAIL="${GITHUB_ACTOR}-@users.noreply.github.com"
         echo "COMMITER_NAME: ${COMMITER_NAME}"
         echo "COMMITER_EMAIL: ${COMMITER_EMAIL}"
+        echo "REMOTE: ${REMOTE}"
         
         mkdir /tmp/github-pages
         cd /tmp/github-pages
-        git init
+        
+        git init .
         git checkout --orphan gh-pages
         git status --short
         # git ls-remote --heads ${REMOTE} gh-pages
