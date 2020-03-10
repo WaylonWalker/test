@@ -3,8 +3,6 @@ on:
   push:
     branches:
       - master
-
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,28 +13,54 @@ jobs:
         REMOTE="https://${GITHUB_PAT}@github.com/${GITHUB_REPOSITORY}.git"
         COMMITER_NAME="${GITHUB_ACTOR}-github-actions"
         COMMITER_EMAIL="${GITHUB_ACTOR}-@users.noreply.github.com"
+        REMOTE_BRANCH_EXISTS=$(git ls-remote --heads ${REMOTE} ${target_branch} | wc -l)
+        
         echo "COMMITER_NAME: ${COMMITER_NAME}"
         echo "COMMITER_EMAIL: ${COMMITER_EMAIL}"
         echo "REMOTE: ${REMOTE}"
         
+        
         mkdir /tmp/github-pages
         cd /tmp/github-pages
         
+        if $keep_history && $REMOTE_BRANCH_EXISTS
+        then
+        git clone --quiet --branch ${target_branch} --depth 1 ${REMOTE} .
+        else
         git init .
         git checkout --orphan gh-pages
-        git status --short
-        # git ls-remote --heads ${REMOTE} gh-pages
+        fi
+        
         echo "<h1>hello there</h1>" > index.html
+        
+        DIRTY=$(git status --short | wc -l)
+        
+        if $keep_history && $REMOTE_BRANCH_EXISTS && [ DIRTY = 0 ]
+        then
+        echo '⚠️ There are no changes to commit, stopping.'
+        else
         git config user.name ${COMMITER_NAME}
         git config user.email ${COMMITER_EMAIL}
         git status --porcelain
         git add --all .
-        git commit -m "DIST to gh-pages"
-        git push --quiet --force ${REMOTE} gh-pages
+        git commit -m "DIST to ${target_branch}"
+        
+        echo 🏃 Deploying ${build_dir} directory to ${target_branch} branch on ${repo} repo
+        
+        if [ $keep_history == false]
+        then
+        git push --quiet ${REMOTE} ${target_branch}
+        else
+        git push --quiet --force ${REMOTE} ${target_branch}
+        fi
+        fi
+        echo 🎉 Content of ${build_dir} has been deployed to GitHub Pages.
         
         
         
         
       env:
         GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
+        target_branch: gh-pages 
+        keep_history: true
 
