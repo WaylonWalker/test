@@ -1,0 +1,39 @@
+name: CI
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: make content
+      run: |
+        echo "<h1>Hello There</h1>" > hello.html
+    - name: push content
+      run: |
+        REMOTE="https://${GITHUB_PAT}@github.com/${GITHUB_REPOSITORY}.git"
+        COMMITER_NAME="${GITHUB_ACTOR}-github-actions"
+        COMMITER_EMAIL="${GITHUB_ACTOR}-@users.noreply.github.com"
+        echo "COMMITER_NAME: ${COMMITER_NAME}"
+        echo "COMMITER_EMAIL: ${COMMITER_EMAIL}"
+        
+        mkdir /tmp/github-pages
+        cd /tmp/github-pages
+        # git ls-remote --heads ${REMOTE} gh-pages
+        echo "<h1>hello there</h1>" > index.html
+        git config user.name ${COMMITER_NAME}
+        git config user.email ${COMMITER_EMAIL}
+        git add --all
+        git commit commit -m "DIST to gh-pages"
+        git push --quiet --force
+        
+        
+        
+        
+      env:
+        GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
+
