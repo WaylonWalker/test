@@ -35,7 +35,7 @@ jobs:
         git checkout --orphan gh-pages
         fi
         
-        echo "<h1>hello there</h1>" > index.html
+        echo "<h1>hello there</h1><p>stranger</p>" > index.html
         
         DIRTY=$(git status --short | wc -l)
         
