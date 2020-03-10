@@ -22,6 +22,7 @@ jobs:
         
         mkdir /tmp/github-pages
         cd /tmp/github-pages
+        git init
         # git ls-remote --heads ${REMOTE} gh-pages
         echo "<h1>hello there</h1>" > index.html
         git config user.name ${COMMITER_NAME}
