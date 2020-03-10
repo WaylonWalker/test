@@ -13,20 +13,13 @@ jobs:
         REMOTE="https://${GITHUB_PAT}@github.com/${GITHUB_REPOSITORY}.git"
         COMMITER_NAME="${GITHUB_ACTOR}-github-actions"
         COMMITER_EMAIL="${GITHUB_ACTOR}-@users.noreply.github.com"
-        REMOTE_BRANCH_EXISTS=$(git ls-remote --heads ${REMOTE} ${target_branch} | wc -l)
-        
-        echo "COMMITER_NAME: ${COMMITER_NAME}"
-        echo "COMMITER_EMAIL: ${COMMITER_EMAIL}"
-        echo "REMOTE: ${REMOTE}"
-        
+        REMOTE_BRANCH_EXISTS=$(git ls-remote --heads ${REMOTE} ${target_branch} | wc -l)        
         
         mkdir /tmp/github-pages
         cd /tmp/github-pages
         
         if $keep_history && [ $REMOTE_BRANCH_EXISTS -ne 0 ]
         then
-        echo remote exists
-        echo clone repo
         git clone --quiet --branch ${target_branch} --depth 1 ${REMOTE} .
         else
         echo remote does not exist
@@ -43,29 +36,18 @@ jobs:
         then
         echo '⚠️ There are no changes to commit, stopping.'
         else
-        echo
-        echo "keep_history: $keep_history"
-        echo "REMOTE_BRANCH_EXISTS: $REMOTE_BRANCH_EXISTS"
-        echo "DIRTY: $DIRTY"
-        echo log before commit
         git log
         git config user.name ${COMMITER_NAME}
         git config user.email ${COMMITER_EMAIL}
-        git status --porcelain
         git add --all .
         git commit -m "DIST to ${target_branch}"
-        echo
-        echo log after commit
-        git log
-        
+
         echo 🏃 Deploying ${build_dir} directory to ${target_branch} branch on ${repo} repo
         
         if [ $keep_history == false]
         then
-        echo pushing to remote
         git push --quiet ${REMOTE} ${target_branch}
         else
-        echo force pushing to remote
         git push --quiet --force ${REMOTE} ${target_branch}
         fi
         fi
