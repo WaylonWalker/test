@@ -39,18 +39,26 @@ jobs:
         then
         echo '⚠️ There are no changes to commit, stopping.'
         else
+        echo
+        echo log before commit
+        git log -1 HEAD --pretty=format:%s
         git config user.name ${COMMITER_NAME}
         git config user.email ${COMMITER_EMAIL}
         git status --porcelain
         git add --all .
         git commit -m "DIST to ${target_branch}"
+        echo
+        echo log after commit
+        git log -1 HEAD --pretty=format:%s
         
         echo 🏃 Deploying ${build_dir} directory to ${target_branch} branch on ${repo} repo
         
         if [ $keep_history == false]
         then
+        echo pushing to remote
         git push --quiet ${REMOTE} ${target_branch}
         else
+        echo force pushing to remote
         git push --quiet --force ${REMOTE} ${target_branch}
         fi
         fi
