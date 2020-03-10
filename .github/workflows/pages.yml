@@ -50,8 +50,9 @@ jobs:
         else
         git push --quiet --force ${REMOTE} ${target_branch}
         fi
-        fi
         echo 🎉 Content of ${build_dir} has been deployed to GitHub Pages.
+        fi
+
         
         
         
