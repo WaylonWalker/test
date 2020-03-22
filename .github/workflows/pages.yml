@@ -1,5 +1,5 @@
 - env: &anchor
-    ANCHOR: "this is my anchor"
+    ANCHOR: this is my anchor
 
 
 name: CI
