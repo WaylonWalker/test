@@ -1,3 +1,7 @@
+- env: &anchor
+    ANCHOR: "this is my anchor"
+
+
 name: CI
 on:
   push:
@@ -8,7 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - env:
+      <<: *anchor
     - name: push content
+
       run: |
-        echo hi
+        echo ${{ env.ANCHOR }}
 
