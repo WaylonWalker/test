@@ -1,4 +1,4 @@
-- env: &anchor
+env: &anchor
     ANCHOR: this is my anchor
 
 
